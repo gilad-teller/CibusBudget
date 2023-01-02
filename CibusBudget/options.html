@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cibus Budget Options</title>
+</head>
+
+<body>
+    <h3>Weekend:</h3>
+    <label>
+        <input type="checkbox" name="weekend" value="0">
+        Sunday
+    </label>
+    <label>
+        <input type="checkbox" name="weekend" value="1">
+        Monday
+    </label>
+    <label>
+        <input type="checkbox" name="weekend" value="2">
+        Tuesday
+    </label>
+    <label>
+        <input type="checkbox" name="weekend" value="3">
+        Wednesday
+    </label>
+    <label>
+        <input type="checkbox" name="weekend" value="4">
+        Thursday
+    </label>
+    <label>
+        <input type="checkbox" name="weekend" value="5">
+        Friday
+    </label>
+    <label>
+        <input type="checkbox" name="weekend" value="6">
+        Saturday
+    </label>
+
+    <h3>Holidays:</h3>
+    <div id="holidays"></div>
+
+    <label for="addHoliday">Add Holiday: </label>
+    <input type="date" id="addHoliday">
+
+
+    <div id="status"></div>
+    <button id="save">Save</button>
+
+    <script src="options.js"></script>
+</body>
+
+</html>
