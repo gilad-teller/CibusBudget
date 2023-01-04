@@ -1,9 +1,21 @@
-const cibusBudget = 2000;
-const myBudget = 900;
-const weekend = [5, 6];
-const ooo = [
+var cibusBudget = 2000;
+var actualBudget = 900;
+const weekend = [];
+const holidays = [];
+
+chrome.storage.sync.get(["cibusBudget", "actualBudget", "weekend", "holidays"], function (items) {
+    console.log(items);
+    cibusBudget = items.cibusBudget;
+    actualBudget = items.actualBudget;
     
-];
+    for (h of items.holidays) {
+        holidays.push(h);
+    }
+
+    for (w of items.weekend) {
+        weekend.push(w);
+    }
+});
 
 let budget = document.getElementById('budget');
 let remainingDays = document.getElementById('remainingDays');
@@ -31,7 +43,7 @@ function handleCookie(cookie) {
 
 function remainingBudget(currentCibusRemaining) {
     let expended = cibusBudget - currentCibusRemaining;
-    let myRemaining = myBudget - expended;
+    let myRemaining = actualBudget - expended;
     return myRemaining;
 }
 
@@ -51,7 +63,7 @@ function countRemainingWorkdays() {
     let endOfMonth = getEndOfMonth(today);
     let count = 0;
     for (let d = today; d < endOfMonth; d.setDate(d.getDate() + 1)) {
-        if (!weekend.includes(d.getDay()) && !ooo.includes(d.getTime())) {
+        if (!weekend.includes(d.getDay()) && !holidays.includes(d.getTime())) {
             count++;
         }
     }
