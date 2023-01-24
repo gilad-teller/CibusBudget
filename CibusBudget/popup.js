@@ -35,7 +35,7 @@ function handleCookies(cookies) {
     if (budgetCookie) {
         if (!hasOrderCookie || hasOrderCookie.value != "0") {
             remainingWorkdays = remainingWorkdays - 1;
-            hasOrder.innerHTML = "Order found";
+            hasOrder.innerHTML = "&#127828; Order found &#127828;";
         }
         remainingDays.innerHTML = remainingWorkdays + ' days';
         let myRemainingBudget = remainingBudget(budgetCookie.value);

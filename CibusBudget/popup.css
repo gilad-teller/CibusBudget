@@ -1,0 +1,17 @@
+table {
+    white-space: nowrap;
+}
+
+th {
+    text-align: start;
+    padding: 0 7px;
+}
+
+td {
+    text-align: end;
+    padding: 0 7px;
+}
+
+#hasOrder {
+    text-align: center;
+}
