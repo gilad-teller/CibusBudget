@@ -22,41 +22,34 @@ let remainingDays = document.getElementById('remainingDays');
 let budgetPerDay = document.getElementById('budgetPerDay');
 let hasOrder = document.getElementById('hasOrder');
 
-//chrome.cookies.get({ url: 'https://www.mysodexo.co.il', name: 'budget' }, handleCookie);
 chrome.cookies.getAll({ url: 'https://www.mysodexo.co.il' }, handleCookies);
 
 function handleCookies(cookies) {
+    console.log(cookies);
     let remainingWorkdays = countRemainingWorkdays();
-    let budgetCookie = cookies.find(c => c.name == "budget");
+    let budgetBeforePurchaseCookie = cookies.find(c => c.name == "budget");
+    let budgetCookie = cookies.find(c => c.name == "bdgt");
     let hasOrderCookie = cookies.find(c => c.name == "user_hasorders");
+    console.log(budgetBeforePurchaseCookie);
     console.log(budgetCookie);
     console.log(hasOrderCookie);
     
     if (budgetCookie) {
-        if (!hasOrderCookie || hasOrderCookie.value != "0") {
+        let myRemainingBudget = remainingBudget(budgetCookie.value);
+
+        if (hasOrderCookie && hasOrderCookie.value === "1") {
             remainingWorkdays = remainingWorkdays - 1;
             hasOrder.innerHTML = "&#127828; Order found &#127828;";
+            let budgetDiff = 0;
+            if (budgetBeforePurchaseCookie) {
+                budgetDiff = budgetBeforePurchaseCookie.value - budgetCookie.value;
+                if (budgetDiff > 0) {
+                    hasOrder.innerHTML = `&#127828; Order pending - ${formatCurrency(budgetDiff)}`;
+                }
+            }
         }
+        
         remainingDays.innerHTML = remainingWorkdays + ' days';
-        let myRemainingBudget = remainingBudget(budgetCookie.value);
-        budget.innerHTML = formatCurrency(myRemainingBudget);
-
-        let perDay = myRemainingBudget / remainingWorkdays;
-        budgetPerDay.innerHTML = formatCurrency(perDay);
-    }
-    else {
-        console.log('No Cookie');
-        budget.innerHTML = 'No cookie';
-    }
-}
-
-function handleCookie(cookie) {
-    let remainingWorkdays = countRemainingWorkdays();
-    remainingDays.innerHTML = remainingWorkdays + ' days';
-    
-    if (cookie) {
-        console.log(cookie);
-        let myRemainingBudget = remainingBudget(cookie.value);
         budget.innerHTML = formatCurrency(myRemainingBudget);
 
         let perDay = myRemainingBudget / remainingWorkdays;
