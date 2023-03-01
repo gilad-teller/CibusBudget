@@ -79,7 +79,7 @@ function getEndOfMonth(date) {
 
 function countRemainingWorkdays() {
     let now = new Date();
-    let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
     let endOfMonth = getEndOfMonth(today);
     let count = 0;
     for (let d = today; d < endOfMonth; d.setDate(d.getDate() + 1)) {
