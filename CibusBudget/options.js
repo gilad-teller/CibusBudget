@@ -8,7 +8,7 @@ function saveOptions() {
         cibusBudget: cibusBudget,
         actualBudget: actualBudget,
         weekend: weekendDays,
-        holidays: holidays
+        holidays: holidays.sort()
     };
 
     console.log(optionsObj);
@@ -30,7 +30,7 @@ function restoreOptions() {
         document.getElementById('actualBudget').value = items.actualBudget;
         
         let holidaysUl = document.getElementById('holidays');
-        for (h of items.holidays) {
+        for (h of items.holidays.sort()) {
             let holidayDate = new Date(h);
 
             let now = new Date();
@@ -75,8 +75,9 @@ function createHolidayElement(date) {
     xBtn.value = date.getTime();
     xBtn.innerHTML = "X";
     xBtn.addEventListener('click', removeHoliday);
-    li.appendChild(document.createTextNode(date.toDateString()));
+    xBtn.style.margin = "0 5px 0 0"
     li.appendChild(xBtn);
+    li.appendChild(document.createTextNode(date.toLocaleDateString('en-GB')));
     li.id = "holiday-" + date.getTime();
     return li;
 }
