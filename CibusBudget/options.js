@@ -84,8 +84,11 @@ function createHolidayElement(date) {
 
 function removeHoliday() {
     console.log(this);
-    let holidayToRemove = this.value;
+    let holidayToRemove = parseInt(this.value);
     let index = holidays.indexOf(holidayToRemove);
+    if (index < 0) {
+        throw new Exception("Unable to remove holiday");
+    }
     holidays.splice(index, 1);
     document.getElementById('holiday-' + holidayToRemove).remove();
 }
