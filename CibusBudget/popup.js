@@ -21,12 +21,18 @@ let budget = document.getElementById('budget');
 let remainingDays = document.getElementById('remainingDays');
 let budgetPerDay = document.getElementById('budgetPerDay');
 let hasOrder = document.getElementById('hasOrder');
+let skipDay = document.getElementById('skipDay');
+skipDay.addEventListener('click', toggleSkipDay);
+
+let remainingWorkdays = 0;
+let myRemainingBudget = 0;
+let isDaySkipped = false;
 
 chrome.cookies.getAll({ url: 'https://www.mysodexo.co.il' }, handleCookies);
 
 function handleCookies(cookies) {
     console.log(cookies);
-    let remainingWorkdays = countRemainingWorkdays();
+    remainingWorkdays = countRemainingWorkdays();
     let budgetBeforePurchaseCookie = cookies.find(c => c.name == "budget");
     let budgetCookie = cookies.find(c => c.name == "bdgt");
     let hasOrderCookie = cookies.find(c => c.name == "user_hasorders");
@@ -35,9 +41,10 @@ function handleCookies(cookies) {
     console.log(hasOrderCookie);
     
     if (budgetCookie) {
-        let myRemainingBudget = remainingBudget(budgetCookie.value);
+        myRemainingBudget = remainingBudget(budgetCookie.value);
 
         if (hasOrderCookie && hasOrderCookie.value === "1") {
+            skipDay.parentElement.style.display = "none";
             remainingWorkdays = remainingWorkdays - 1;
             hasOrder.innerHTML = "&#127828; Order found &#127828;";
             let budgetDiff = 0;
@@ -59,6 +66,18 @@ function handleCookies(cookies) {
         console.log('No Cookie');
         budget.innerHTML = 'No cookie';
     }
+}
+
+function toggleSkipDay() {
+    if (isDaySkipped) {
+        remainingWorkdays++;
+    } else {
+        remainingWorkdays--;
+    }
+    let perDay = myRemainingBudget / remainingWorkdays;
+    budgetPerDay.innerHTML = formatCurrency(perDay);
+    remainingDays.innerHTML = remainingWorkdays + ' days';
+    isDaySkipped = !isDaySkipped;
 }
 
 function remainingBudget(currentCibusRemaining) {
