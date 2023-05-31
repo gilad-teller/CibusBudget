@@ -4,7 +4,7 @@ const weekend = [];
 const holidays = [];
 
 chrome.storage.sync.get(["cibusBudget", "actualBudget", "weekend", "holidays"], function (items) {
-    console.log(items);
+    console.log('Storage Items', items);
     cibusBudget = items.cibusBudget;
     actualBudget = items.actualBudget;
     
@@ -28,17 +28,17 @@ let remainingWorkdays = 0;
 let myRemainingBudget = 0;
 let isDaySkipped = false;
 
-chrome.cookies.getAll({ url: 'https://www.mysodexo.co.il' }, handleCookies);
+chrome.cookies.getAll({ domain: 'mysodexo.co.il' }, handleCookies);
 
 function handleCookies(cookies) {
-    console.log(cookies);
+    console.log('cookies', cookies);
     remainingWorkdays = countRemainingWorkdays();
     let budgetBeforePurchaseCookie = cookies.find(c => c.name == "budget");
     let budgetCookie = cookies.find(c => c.name == "bdgt");
     let hasOrderCookie = cookies.find(c => c.name == "user_hasorders");
-    console.log(budgetBeforePurchaseCookie);
-    console.log(budgetCookie);
-    console.log(hasOrderCookie);
+    console.log('budgetBeforePurchaseCookie', budgetBeforePurchaseCookie);
+    console.log('budgetCookie', budgetCookie);
+    console.log('hasOrderCookie', hasOrderCookie);
     
     if (budgetCookie) {
         myRemainingBudget = remainingBudget(budgetCookie.value);
