@@ -99,9 +99,18 @@ function getEndOfMonth(date) {
 function countRemainingWorkdays() {
     let now = new Date();
     let today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    let lastimeZoneOffset = today.getTimezoneOffset();
     let endOfMonth = getEndOfMonth(today);
     let count = 0;
     for (let d = today; d < endOfMonth; d.setDate(d.getDate() + 1)) {
+        let newTimezoneOffset = d.getTimezoneOffset();
+        if (lastimeZoneOffset !== newTimezoneOffset) {
+            let timeZoneChange = newTimezoneOffset - lastimeZoneOffset;
+            let timeZoneChangeHours = timeZoneChange / 60;
+            console.log('timeZoneChangeHours', timeZoneChangeHours);
+            d.setHours(d.getHours() - timeZoneChangeHours);
+        }
+        lastimeZoneOffset = newTimezoneOffset;
         if (!weekend.includes(d.getDay()) && !holidays.includes(d.getTime())) {
             count++;
         }
