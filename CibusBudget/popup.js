@@ -28,45 +28,36 @@ let remainingWorkdays = 0;
 let myRemainingBudget = 0;
 let isDaySkipped = false;
 
-chrome.cookies.getAll({ domain: 'mysodexo.co.il' }, handleCookies);
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const tab = tabs[0];
 
-function handleCookies(cookies) {
-    console.log('cookies', cookies);
-    remainingWorkdays = countRemainingWorkdays();
-    let budgetBeforePurchaseCookie = cookies.find(c => c.name == "budget");
-    let budgetCookie = cookies.find(c => c.name == "bdgt");
-    let hasOrderCookie = cookies.find(c => c.name == "user_hasorders");
-    console.log('budgetBeforePurchaseCookie', budgetBeforePurchaseCookie);
-    console.log('budgetCookie', budgetCookie);
-    console.log('hasOrderCookie', hasOrderCookie);
-    
-    if (budgetCookie) {
-        myRemainingBudget = remainingBudget(budgetCookie.value);
+    function getBudgetBalance() {
+        const budgetElement = document.getElementsByClassName('budget')[0];
+        const innerText = budgetElement.innerText;
+        console.log('budgetElement.innerText', innerText);
+        return innerText;
+    };
 
-        if (hasOrderCookie && hasOrderCookie.value === "1") {
-            skipDay.parentElement.style.display = "none";
-            remainingWorkdays = remainingWorkdays - 1;
-            hasOrder.innerHTML = "&#127828; Order found &#127828;";
-            let budgetDiff = 0;
-            if (budgetBeforePurchaseCookie) {
-                budgetDiff = budgetBeforePurchaseCookie.value - budgetCookie.value;
-                if (budgetDiff > 0) {
-                    hasOrder.innerHTML = `&#127828; Order pending - ${formatCurrency(budgetDiff)}`;
-                }
-            }
-        }
-        
+    chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: getBudgetBalance
+    }).then(result => {
+        console.log('result', result);
+        const budgetString = result[0].result.split(" ")[2].replaceAll(/\u20AA/g, "").replaceAll(",", "");
+        console.log('budgetString', budgetString);
+        const budgetBalance = parseFloat(budgetString);
+        console.log('budgetBalance', budgetBalance);
+
+        myRemainingBudget = remainingBudget(budgetBalance);
+        remainingWorkdays = countRemainingWorkdays();
+
         remainingDays.innerHTML = remainingWorkdays + ' days';
         budget.innerHTML = formatCurrency(myRemainingBudget);
 
         let perDay = myRemainingBudget / remainingWorkdays;
         budgetPerDay.innerHTML = formatCurrency(perDay);
-    }
-    else {
-        console.log('No Cookie');
-        budget.innerHTML = 'No cookie';
-    }
-}
+    });
+});
 
 function toggleSkipDay() {
     if (isDaySkipped) {
