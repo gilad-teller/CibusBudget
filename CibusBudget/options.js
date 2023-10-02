@@ -1,10 +1,10 @@
 function saveOptions() {
-    let cibusBudget = document.getElementById('cibusBudget').value;
-    let actualBudget = document.getElementById('actualBudget').value;
-    let weekendArr = Array.from(document.getElementsByName('weekend'));
-    let weekendDays = weekendArr.filter(cb => cb.checked).map(cb => parseInt(cb.value));
+    const cibusBudget = document.getElementById('cibusBudget').value;
+    const actualBudget = document.getElementById('actualBudget').value;
+    const weekendArr = Array.from(document.getElementsByName('weekend'));
+    const weekendDays = weekendArr.filter(cb => cb.checked).map(cb => parseInt(cb.value));
 
-    let optionsObj = {
+    const optionsObj = {
         cibusBudget: cibusBudget,
         actualBudget: actualBudget,
         weekend: weekendDays,
@@ -15,7 +15,7 @@ function saveOptions() {
 
     chrome.storage.sync.set(optionsObj, function () {
         // Update status to let user know options were saved.
-        var status = document.getElementById('status');
+        const status = document.getElementById('status');
         status.textContent = 'Options saved.';
         setTimeout(function () {
             status.textContent = '';
@@ -29,22 +29,22 @@ function restoreOptions() {
         document.getElementById('cibusBudget').value = items.cibusBudget;
         document.getElementById('actualBudget').value = items.actualBudget;
         
-        let holidaysUl = document.getElementById('holidays');
+        const holidaysUl = document.getElementById('holidays');
         for (h of items.holidays.sort()) {
-            let holidayDate = new Date(h);
+            const holidayDate = new Date(h);
 
-            let now = new Date();
-            let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             if (holidayDate < today) {
                 continue;
             }
 
-            let holiday = createHolidayElement(holidayDate);
+            const holiday = createHolidayElement(holidayDate);
             holidaysUl.appendChild(holiday);
             holidays.push(h);
         }
     
-        let weekendArr = Array.from(document.getElementsByName('weekend'));
+        const weekendArr = Array.from(document.getElementsByName('weekend'));
         for (day of weekendArr) {
             day.checked = items.weekend.includes(parseInt(day.value));
         }
@@ -52,26 +52,26 @@ function restoreOptions() {
 }
 
 function addHoliday() {
-    let now = new Date();
-    let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    let holidayToAdd = document.getElementById('addHolidayDate');
-    let holidayDate = new Date(holidayToAdd.value);
+    const holidayToAdd = document.getElementById('addHolidayDate');
+    const holidayDate = new Date(holidayToAdd.value);
 
     if (holidayDate < today) {
         return;
     }
 
-    let holiday = createHolidayElement(holidayDate);
-    let holidaysUl = document.getElementById('holidays');
+    const holiday = createHolidayElement(holidayDate);
+    const holidaysUl = document.getElementById('holidays');
     holidaysUl.appendChild(holiday);
     holidays.push(holidayDate.getTime());
     console.log(holidays);
 }
 
 function createHolidayElement(date) {
-    var li = document.createElement("li");
-    var xBtn = document.createElement("button");
+    const li = document.createElement("li");
+    const xBtn = document.createElement("button");
     xBtn.value = date.getTime();
     xBtn.innerHTML = "X";
     xBtn.addEventListener('click', removeHoliday);
@@ -84,8 +84,8 @@ function createHolidayElement(date) {
 
 function removeHoliday() {
     console.log(this);
-    let holidayToRemove = parseInt(this.value);
-    let index = holidays.indexOf(holidayToRemove);
+    const holidayToRemove = parseInt(this.value);
+    const index = holidays.indexOf(holidayToRemove);
     if (index < 0) {
         throw new Exception("Unable to remove holiday");
     }
