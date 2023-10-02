@@ -17,11 +17,11 @@ chrome.storage.sync.get(["cibusBudget", "actualBudget", "weekend", "holidays"], 
     }
 });
 
-let budget = document.getElementById('budget');
-let remainingDays = document.getElementById('remainingDays');
-let budgetPerDay = document.getElementById('budgetPerDay');
-let hasOrder = document.getElementById('hasOrder');
-let skipDay = document.getElementById('skipDay');
+const budget = document.getElementById('budget');
+const remainingDays = document.getElementById('remainingDays');
+const budgetPerDay = document.getElementById('budgetPerDay');
+const hasOrder = document.getElementById('hasOrder');
+const skipDay = document.getElementById('skipDay');
 skipDay.addEventListener('click', toggleSkipDay);
 
 let remainingWorkdays = 0;
@@ -54,7 +54,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         remainingDays.innerHTML = remainingWorkdays + ' days';
         budget.innerHTML = formatCurrency(myRemainingBudget);
 
-        let perDay = myRemainingBudget / remainingWorkdays;
+        const perDay = myRemainingBudget / remainingWorkdays;
         budgetPerDay.innerHTML = formatCurrency(perDay);
     });
 });
@@ -65,21 +65,21 @@ function toggleSkipDay() {
     } else {
         remainingWorkdays--;
     }
-    let perDay = myRemainingBudget / remainingWorkdays;
+    const perDay = myRemainingBudget / remainingWorkdays;
     budgetPerDay.innerHTML = formatCurrency(perDay);
     remainingDays.innerHTML = remainingWorkdays + ' days';
     isDaySkipped = !isDaySkipped;
 }
 
 function remainingBudget(currentCibusRemaining) {
-    let expended = cibusBudget - currentCibusRemaining;
-    let myRemaining = actualBudget - expended;
+    const expended = cibusBudget - currentCibusRemaining;
+    const myRemaining = actualBudget - expended;
     return myRemaining;
 }
 
 function getEndOfMonth(date) {
-    let month = date.getMonth();
-    let year = date.getFullYear();
+    const month = date.getMonth();
+    const year = date.getFullYear();
     if (month === 11) {
         console.log('move year');
         return new Date(year + 1, 0, 1);
@@ -88,16 +88,16 @@ function getEndOfMonth(date) {
 }
 
 function countRemainingWorkdays() {
-    let now = new Date();
-    let today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
     let lastimeZoneOffset = today.getTimezoneOffset();
-    let endOfMonth = getEndOfMonth(today);
+    const endOfMonth = getEndOfMonth(today);
     let count = 0;
     for (let d = today; d < endOfMonth; d.setDate(d.getDate() + 1)) {
-        let newTimezoneOffset = d.getTimezoneOffset();
+        const newTimezoneOffset = d.getTimezoneOffset();
         if (lastimeZoneOffset !== newTimezoneOffset) {
-            let timeZoneChange = newTimezoneOffset - lastimeZoneOffset;
-            let timeZoneChangeHours = timeZoneChange / 60;
+            const timeZoneChange = newTimezoneOffset - lastimeZoneOffset;
+            const timeZoneChangeHours = timeZoneChange / 60;
             console.log('timeZoneChangeHours', timeZoneChangeHours);
             d.setHours(d.getHours() - timeZoneChangeHours);
         }
