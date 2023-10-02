@@ -14,8 +14,9 @@
     },
     "options_page": "options.html",
     "permissions": [
-        "cookies",
-        "storage"
+        "storage",
+        "scripting",
+        "activeTab"
     ],
     "host_permissions": [
         "https://*.mysodexo.co.il/*"
