@@ -17,8 +17,5 @@
         "storage",
         "scripting",
         "activeTab"
-    ],
-    "host_permissions": [
-        "https://*.mysodexo.co.il/*"
     ]
 }
