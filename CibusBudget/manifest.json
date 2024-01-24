@@ -12,6 +12,13 @@
     "action": {
         "default_popup": "popup.html"
     },
+    "content_scripts": [
+        {
+            "matches": ["https://consumers.pluxee.co.il/restaurants/delivery/restaurant/*"],
+            "js": ["contentScript.js"],
+            "run_at": "document_end"
+        }
+    ],
     "options_page": "options.html",
     "permissions": [
         "storage",
