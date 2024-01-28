@@ -1,12 +1,21 @@
-const discountMultiplier = getDiscount();
-const priceElements = document.getElementsByClassName('card-footer');
-for (let e of priceElements) {
-    addDiscountToElement(e, discountMultiplier);
-}
+setTimeout(() => {
+    const discountMultiplier = getDiscount();
+    if (!discountMultiplier) {
+        return;
+    }
+    const priceElements = document.getElementsByClassName('card-footer');
+    for (let e of priceElements) {
+        addDiscountToElement(e, discountMultiplier);
+    }
+}, 5000);
+
 
 function getDiscount() {
     const discountElement = document.getElementsByClassName('mat-tooltip-trigger size-16 white-pink')[0];
     console.log('discountElement', discountElement);
+    if (!discountElement) {
+        return false;
+    }
     const innerText = discountElement.innerText;
     console.log('mat-tooltip-trigger size-16 white-pink.innerText', innerText);
     const discountNumberString = innerText.split(' ')[0].replaceAll(/%/g, '');
@@ -21,5 +30,5 @@ function addDiscountToElement(e, discountMultiplier) {
     let priceNumberString = priceText.replaceAll(/\u20AA/g, "");
     let priceValue = parseFloat(priceNumberString);
     let discountPrice = priceValue * discountMultiplier;
-    e.children[0].innerHTML = `<s>${priceText}</s> \u20AA${discountPrice}`;
+    e.children[0].innerHTML = `<s>${priceText}</s> \u20AA${discountPrice.toFixed(2)}`;
 }
