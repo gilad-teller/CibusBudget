@@ -1,14 +1,16 @@
-setTimeout(() => {
-    const discountMultiplier = getDiscount();
-    if (!discountMultiplier) {
-        return;
-    }
-    const priceElements = document.getElementsByClassName('card-footer');
-    for (let e of priceElements) {
-        addDiscountToElement(e, discountMultiplier);
-    }
-}, 5000);
-
+chrome.storage.sync.get(["discountTimeout"], function (items) {
+    console.log('Storage Items', items);
+    setTimeout(() => {
+        const discountMultiplier = getDiscount();
+        if (!discountMultiplier) {
+            return;
+        }
+        const priceElements = document.getElementsByClassName('card-footer');
+        for (let e of priceElements) {
+            addDiscountToElement(e, discountMultiplier);
+        }
+    }, items.discountTimeout);
+});
 
 function getDiscount() {
     const discountElement = document.getElementsByClassName('mat-tooltip-trigger size-16 white-pink')[0];
