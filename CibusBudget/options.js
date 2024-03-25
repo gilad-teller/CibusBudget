@@ -1,12 +1,14 @@
 function saveOptions() {
     const cibusBudget = document.getElementById('cibusBudget').value;
     const actualBudget = document.getElementById('actualBudget').value;
+    const discountTimeout = document.getElementById('discountTimeout').value;
     const weekendArr = Array.from(document.getElementsByName('weekend'));
     const weekendDays = weekendArr.filter(cb => cb.checked).map(cb => parseInt(cb.value));
 
     const optionsObj = {
         cibusBudget: cibusBudget,
         actualBudget: actualBudget,
+        discountTimeout: discountTimeout,
         weekend: weekendDays,
         holidays: holidays.sort()
     };
@@ -24,10 +26,11 @@ function saveOptions() {
 }
 
 function restoreOptions() {
-    chrome.storage.sync.get(["cibusBudget", "actualBudget", "weekend", "holidays"], function (items) {
+    chrome.storage.sync.get(["cibusBudget", "actualBudget", "discountTimeout", "weekend", "holidays"], function (items) {
         console.log(items);
         document.getElementById('cibusBudget').value = items.cibusBudget;
         document.getElementById('actualBudget').value = items.actualBudget;
+        document.getElementById('discountTimeout').value = items.discountTimeout;
         
         const holidaysUl = document.getElementById('holidays');
         for (h of items.holidays.sort()) {

@@ -37,7 +37,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         console.log('budgetElement.innerText', innerText);
         return innerText;
     };
-
+    
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
         func: getBudgetBalance
