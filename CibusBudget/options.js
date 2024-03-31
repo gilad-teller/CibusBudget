@@ -58,17 +58,29 @@ function addHoliday() {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    const holidayToAdd = document.getElementById('addHolidayDate');
-    const holidayDate = new Date(holidayToAdd.value);
+    const addHolidayDateStart = document.getElementById('addHolidayDateStart');
+    const holidayDateStart = new Date(addHolidayDateStart.value);
 
-    if (holidayDate < today) {
+    const addHolidayDateEnd = document.getElementById('addHolidayDateEnd');
+    let holidayDateEnd = holidayDateStart;
+    if (addHolidayDateEnd.value) {
+        holidayDateEnd = new Date(addHolidayDateEnd.value);
+    }
+    
+
+    if (holidayDateStart < today || holidayDateStart > holidayDateEnd) {
         return;
     }
 
-    const holiday = createHolidayElement(holidayDate);
-    const holidaysUl = document.getElementById('holidays');
-    holidaysUl.appendChild(holiday);
-    holidays.push(holidayDate.getTime());
+    for (let d = new Date(holidayDateStart); d <= holidayDateEnd; d.setDate(d.getDate() + 1)) {
+        const holidayToAdd = new Date(d);
+        console.log('Adding holiday', holidayToAdd);
+        const holiday = createHolidayElement(holidayToAdd);
+        const holidaysUl = document.getElementById('holidays');
+        holidaysUl.appendChild(holiday);
+        holidays.push(holidayDateStart.getTime());
+    }
+
     console.log(holidays);
 }
 
@@ -96,7 +108,16 @@ function removeHoliday() {
     document.getElementById('holiday-' + holidayToRemove).remove();
 }
 
+function updateEndDate() {
+    const addHolidayDateStart = document.getElementById('addHolidayDateStart');
+    const addHolidayDateEnd = document.getElementById('addHolidayDateEnd');
+    if (!addHolidayDateEnd.value || addHolidayDateEnd.value < addHolidayDateStart.value) {
+        addHolidayDateEnd.value = addHolidayDateStart.value;
+    }
+}
+
 const holidays = [];
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.getElementById('save').addEventListener('click', saveOptions);
 document.getElementById('addHolidayBtn').addEventListener('click', addHoliday);
+document.getElementById('addHolidayDateStart').addEventListener('change', updateEndDate);
