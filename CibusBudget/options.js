@@ -78,7 +78,7 @@ function addHoliday() {
         const holiday = createHolidayElement(holidayToAdd);
         const holidaysUl = document.getElementById('holidays');
         holidaysUl.appendChild(holiday);
-        holidays.push(holidayDateStart.getTime());
+        holidays.push(holidayToAdd.getTime());
     }
 
     console.log(holidays);
