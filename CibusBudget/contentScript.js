@@ -1,16 +1,26 @@
-chrome.storage.sync.get(["discountTimeout"], function (items) {
-    console.log('Storage Items', items);
-    setTimeout(() => {
-        const discountMultiplier = getDiscount();
-        if (!discountMultiplier) {
-            return;
-        }
-        const priceElements = document.getElementsByClassName('card-footer');
-        for (let e of priceElements) {
-            addDiscountToElement(e, discountMultiplier);
-        }
-    }, items.discountTimeout);
+window.navigation.addEventListener("navigate", (event) => {
+    console.log('Navigation event', event);
+    const url = new URL(event.destination.url);
+    console.log('Navigation URL', url);
+    
+    if (url.pathname.startsWith('/restaurants/delivery/restaurant/')) {
+        chrome.storage.sync.get(["discountTimeout"], function (items) {
+            console.log('Storage Items', items);
+            setTimeout(showDiscounts, items.discountTimeout);
+        });
+    }
 });
+
+function showDiscounts() {
+    const discountMultiplier = getDiscount();
+    if (!discountMultiplier) {
+        return;
+    }
+    const priceElements = document.getElementsByClassName('card-footer');
+    for (let e of priceElements) {
+        addDiscountToElement(e, discountMultiplier);
+    }
+}
 
 function getDiscount() {
     const discountElement = document.getElementsByClassName('mat-tooltip-trigger size-16 white-pink')[0];
