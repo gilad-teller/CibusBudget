@@ -1,0 +1,1 @@
+Compress-Archive -Path CibusBudget\* -DestinationPath CibusBudget.zip -Force
