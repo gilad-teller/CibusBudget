@@ -1,3 +1,4 @@
+console.log('CibusBudget contentScript.js loaded');
 window.navigation.addEventListener("navigate", (event) => {
     console.log('Navigation event', event);
     const url = new URL(event.destination.url);
@@ -23,14 +24,14 @@ function showDiscounts() {
 }
 
 function getDiscount() {
-    const discountElement = document.getElementsByClassName('mat-tooltip-trigger size-16 white-pink')[0];
+    const discountElement = document.querySelector('div.menu-tag-big.ng-star-inserted:not(.new)');
     console.log('discountElement', discountElement);
     if (!discountElement) {
         return false;
     }
     const innerText = discountElement.innerText;
-    console.log('mat-tooltip-trigger size-16 white-pink.innerText', innerText);
-    const discountNumberString = innerText.split(' ')[0].replaceAll(/%/g, '');
+    console.log('discountElement.innerText', innerText);
+    const discountNumberString = innerText.trim().split(' ')[0].replaceAll(/%/g, '');
     const discountValue = parseFloat(discountNumberString);
     const discountMultiplier = (100 - discountValue) / 100;
     console.log('discountMultiplier', discountMultiplier);
