@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Cibus Budget",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "description": "Calculate Cibus budget for the rest of the month, and show discounts on menu items.",
     "icons": {
         "16": "images/icon-16.png",
@@ -14,9 +14,9 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://consumers.pluxee.co.il/restaurants/delivery/restaurant/*"],
+            "matches": ["https://consumers.pluxee.co.il/restaurants/delivery*"],
             "js": ["contentScript.js"],
-            "run_at": "document_end"
+            "run_at": "document_idle"
         }
     ],
     "options_page": "options.html",
